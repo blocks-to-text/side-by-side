@@ -1,4 +1,8 @@
+# Study Session
 
+A page where students (or teachers in code-alongs) can create scripts with familiar blocks then transform the snippets to python to be run in python tutor (objective: notional machine), or studied in non-runtime environments like the parsonizer (objectives: logic & language structures) and spot & shuffle (objectives: key words & attention to textual detail).
+
+Students or teachers can create & download review sheets as they go by saving helpful snippets and taking notes about what they learned and any helpful resources.
 
 
 ___
