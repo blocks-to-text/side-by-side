@@ -1,7 +1,7 @@
-function read_snippet_query() {
+function read_query(entry) {
   var url_string = window.location.href;
   var url = new URL(url_string);
-  var snippet_encoded = url.searchParams.get("snippet");
+  var snippet_encoded = url.searchParams.get(entry);
   return snippet_encoded;
 };
 
@@ -26,11 +26,23 @@ function decode_query(coded_challenge) {
   return desanitized;
 };
 
-function open_in(env) {
+function gen_permalink() {
+
   var code = Blockly.Python.workspaceToCode();
-  var url = generate_permalink(code, encode_query, env);
+  var url = generate_permalink(code, encode_query, 'code-along'); 
+  var _notes = notes.getValue();
+  url += '&notes=' + encode_query(_notes);
+  var perma_display = document.getElementById("display-perma");
+  perma_display.value = url;
+  copy_to_clipboard(url); 
+  alert('copied permalink');
+
+}
+
+function open_in(viztool) {
+  var code = Blockly.Python.workspaceToCode();
+  var url = generate_permalink(code, encode_query, viztool);
   window.open(url, '_blank');
 };
-
 
 

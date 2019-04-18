@@ -14,18 +14,12 @@
 
   <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
 
-  <script src="./saving/init.js"></script>
   <script src="./saving/handlers.js"></script>
 
   <script src="./linking/ctr-c.js"></script>
   <script src="./linking/open-in-pytut.js"></script>
   <script src="./linking/permalinking.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <link href="./preview/modal.css" rel="stylesheet" />
-  <script src="./preview/global-vars.js"></script>
-  <script src="./preview/modal.js"></script>
-  <script src="./preview/scripts.js"></script>
 </head>
 <body>
   <table width="100%" height="50%">
@@ -39,15 +33,6 @@
             <td id="tab_python" class="taboff">Python</td>
             <td id="tab_xml" class="taboff">XML</td>
             <td class="tabmax">
-<!--              <button id="trashButton" class="notext" title="...">
-                <img src='./blockly/media/1x1.gif' class="trash icon21">
-              </button>
-               <button id="linkButton" class="notext" title="...">
-                <img src='./blockly/media/1x1.gif' class="link icon21">
-              </button>
-              <button id="runButton" class="notext primary" title="...">
-                <img src='./blockly/media/1x1.gif' class="run icon21">
-              </button> -->
             </td>
           </tr>
         </table>
@@ -66,20 +51,14 @@
       <button onclick="save_snippet()">save snippet</button>
       <button onclick="open_in_pytut();">run code in python tutor</button> <button onclick="open_in('parsonizer');">parsonize</button> <button onclick="open_in('spot');">spotify</button> <button onclick="open_in('shuffle');">shuffle</button> <button onclick="copy_it();">copy snippet</button> <br>
     </div>
-    <div>
-      <button onclick="save_notes();">save notes</button>
-    </div>
+    <hr>
 
     <div id="notes" style="position: relative; width: 800px; height: 250px;"></div>
 
     file name: <input id="file-name"></input>
-    <button onclick="preview_file()">
-      <a style="text-decoration: none; color: black;" href="#guesses-history" data-modal-open>
-        preview file
-      </a>
-    </button>
-    <button onclick="download_session()">download file</button>
-    <button onclick="clear_session()">clear session</button>
+    <button onclick="download_session()">download study session</button> <br>
+    <button id="gen-perma" onclick="gen_permalink();">study session permalink:</button>
+    <input id="display-perma"></input><br>
   </div>
   <hr>
   <p> <a href="https://github.com/blocks-to-text/code-along" target="_blank">code-along source code</a>, powered by <a href="https://github.com/google/blockly" target="_blank">  blockly </a> & <a href="https://github.com/ajaxorg/ace" target="_blank">  ace </a>
@@ -362,31 +341,6 @@
   </xml>
 
 
-    <!-- begin preview modal -->
-
-  <div id="guesses-history" style="display:none; overflow-y: hidden;">
-    <div style="padding-right: 5%; padding-left: 5%; padding-bottom: 5%; overflow-y: hidden;">
-      <br>
-      <div>
-        <div id="filename-zone" class="prettyprint"></div>  
-      </div>
-      <br>
-      <div >
-        <div id="preview-zone" style="height: 75vh; width: 100vh; overflow-y: auto"></div>
-      </div>
-    </div>
-  </div>
-    <div class="modal" style="overflow-y: hidden;">
-      <div class="modal-inner" style="height: 100%; width: 100%; overflow-y: hidden;">
-        <a data-modal-close>X</a>
-        <div class="modal-content" style="overflow-y: hidden;"></div>
-      </div>
-    </div>
-
-    <!-- <script src="./guesses-history/modal.js"></script> -->
-    <script>var modal = new VanillaModal.default();</script>
-
-    <!-- end preview modal -->
 
     <script src="assets/ace/ace.js"></script>
     <script src="assets/droplet-full.js"></script>
@@ -398,11 +352,17 @@
       var notes = ace.edit("notes");
 
       notes.setTheme('ace/theme/chrome');
-      // notes.getSession().setMode('ace/mode/javascript');
+      notes.getSession().setMode('ace/mode/python');
       notes.setFontSize(13);
       notes.getSession().setTabSize(2);
+      notes.setValue("'''  notes\n\n'''\n#  snippets\n\n")
 
-      model = init_session();
+      var query_notes = read_query('notes');
+
+      if (query_notes) {
+        notes.setValue(query_notes);
+      };
+      
     </script>
 
 </body>

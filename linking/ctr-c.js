@@ -1,7 +1,17 @@
 function copy_it() {
-  var code = Blockly.Python.workspaceToCode();
-  copy_to_clipboard(code); 
-  alert("copied snippet");
+  
+  if (editor.session.currentlyUsingBlocks) {
+    editor.toggleBlocks(cb);
+  } else {
+    cb();
+  };
+
+  function cb() {
+    var code = editor.aceEditor.getValue();
+    copy_to_clipboard(code); 
+    alert("copied snippet. open the console, paste & hit enter");
+  }
+  
 };
 
 // https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
