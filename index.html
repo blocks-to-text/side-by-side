@@ -3,16 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
-  <title>Blockly Demo:</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="/storage.js"></script>
+  <title>side by side</title>
+  <!-- <script src="/storage.js"></script> -->
+  <link rel="stylesheet" href="./blockly/style.css">
   <script src="./blockly/blockly_compressed.js"></script>
   <script src="./blockly/blocks_compressed.js"></script>
   <script src="./blockly/python_compressed.js"></script>
   <script src="./blockly/code.js"></script>
-
-
-  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
 
   <script src="./saving/handlers.js"></script>
 
@@ -31,7 +28,7 @@
             <td class="tabmin">&nbsp;</td>
             <td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff">Python</td>
-            <td id="tab_xml" class="taboff">XML</td>
+            <td id="tab_xml" style="visibility:hidden" class="taboff">XML</td>
             <td class="tabmax">
             </td>
           </tr>
@@ -39,7 +36,10 @@
       </td>
     </tr>
     <tr>
-      <td height="99%" colspan=2 id="content_area">
+      <td style="height: 100%; width: 55%;" id="content_area">
+      </td>
+      <td>
+        <div id="secondaryDiv" style="height: 100%; width: 100%;"></div>
       </td>
     </tr>
   </table>
@@ -49,19 +49,19 @@
   <div>
     <div>
       <button onclick="save_snippet()">save snippet</button>
-      <button onclick="open_in_pytut();">run code in python tutor</button> <button onclick="open_in('parsonizer');">parsonize</button> <button onclick="open_in('spot');">spotify</button> <button onclick="open_in('shuffle');">shuffle</button> <button onclick="copy_it();">copy snippet</button> <br>
+      <button onclick="open_in_pytut();">run code in python tutor</button> <button onclick="open_in('parsonizer');">parsonize</button> <button onclick="open_in('shuffle');">shuffle</button> <button onclick="open_in('spot');">spotify</button> <button onclick="copy_it();">copy snippet</button> <br>
     </div>
     <hr>
 
     <div id="notes" style="position: relative; width: 800px; height: 250px;"></div>
 
-    file name: <input id="file-name"></input>
+    file name: <input id="file-name" value="study-session.py"></input>
     <button onclick="download_session()">download study session</button> <br>
-    <button id="gen-perma" onclick="gen_permalink();">study session permalink:</button>
+    <button id="gen-perma" onclick="show_permalink();">study session permalink:</button>
     <input id="display-perma"></input><br>
   </div>
   <hr>
-  <p> <a href="https://github.com/blocks-to-text/code-along" target="_blank">code-along source code</a>, powered by <a href="https://github.com/google/blockly" target="_blank">  blockly </a> & <a href="https://github.com/ajaxorg/ace" target="_blank">  ace </a>
+  <p> <a href="https://github.com/blocks-to-text/side-by-side" target="_blank">side by side source code</a>, powered by <a href="https://github.com/google/blockly" target="_blank">blockly</a> & <a href="https://github.com/ajaxorg/ace" target="_blank">ace</a>
   <br>
   <hr>  
   <hr>  
@@ -222,6 +222,13 @@
           </shadow>
         </value>
       </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
       <block type="text_isEmpty">
         <value name="VALUE">
           <shadow type="text">
@@ -263,13 +270,6 @@
         </value>
       </block>
       <block type="text_trim">
-        <value name="TEXT">
-          <shadow type="text">
-            <field name="TEXT">abc</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="text_print">
         <value name="TEXT">
           <shadow type="text">
             <field name="TEXT">abc</field>
@@ -337,17 +337,14 @@
     </category>
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
-    <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+<!--     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category> -->
   </xml>
 
 
 
-    <script src="assets/ace/ace.js"></script>
-    <script src="assets/droplet-full.js"></script>
+    <script src="./ace/ace.js"></script>
 
     <script>
-
-      var sessions = {};
 
       var notes = ace.edit("notes");
 
@@ -362,7 +359,53 @@
       if (query_notes) {
         notes.setValue(query_notes);
       };
+
+      var query_snippet = read_query('snippet');
+
+      if (query_snippet) {
+        // var xmlTextarea = document.getElementById('content_xml');
+        // xmlTextarea.value = query_snippet;
+        // var xmlDom = null;
+        // try {
+        //   xmlDom = Blockly.Xml.textToDom(xmlText);
+        // } catch (e) {
+        //   var q =
+        //       window.confirm(MSG['badXml'].replace('%1', e));
+        //   if (!q) {
+        //     // Leave the user on the XML tab.
+            
+        //   }
+        // }
+        // if (xmlDom) {
+        //   Code.workspace.clear();
+        //   Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
+        // }
+      };
+
+
+        // if (document.getElementById('tab_xml').className == 'tabon') {
+      //   var xmlTextarea = document.getElementById('content_xml');
+      //   var xmlText = xmlTextarea.value;
+      //   var xmlDom = null;
+      //   try {
+      //     xmlDom = Blockly.Xml.textToDom(xmlText);
+      //   } catch (e) {
+      //     var q =
+      //         window.confirm(MSG['badXml'].replace('%1', e));
+      //     if (!q) {
+      //       // Leave the user on the XML tab.
+      //       return;
+      //     }
+      //   }
+      //   if (xmlDom) {
+      //     Code.workspace.clear();
+      //     Blockly.Xml.domToWorkspace(xmlDom, Code.workspace);
+      //   }
+      // }
       
+      window.onbeforeunload = function() {
+        confirm('are you sure you want to leave?  \nyou\'ll lose your notes')
+      };
     </script>
 
 </body>

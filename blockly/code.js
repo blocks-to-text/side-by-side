@@ -200,7 +200,7 @@ Code.bindClick = function(el, func) {
  */
 Code.importPrettify = function() {
   var script = document.createElement('script');
-  script.setAttribute('src', 'https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js');
+  script.setAttribute('src', './blockly/run_prettify.js');
   document.head.appendChild(script);
 };
 
@@ -234,12 +234,14 @@ Code.getBBox_ = function(element) {
  */
 Code.LANG = Code.getLang();
 
+
 /**
  * List of tab names.
  * @private
  */
 // Code.TABS_ = ['blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
 Code.TABS_ = ['blocks', 'python', 'xml'];
+// Code.TABS_ = ['blocks', 'python'];
 
 Code.selected = 'blocks';
 
@@ -316,6 +318,32 @@ Code.renderContent = function() {
     Code.attemptCodeGeneration(Blockly.Lua, 'lua');
   }
 };
+
+// Code.renderSnippet = function(snippet) {
+//   var content = document.getElementById('content_blocks');
+//   // Initialize the pane.
+//   if (content.id == 'content_xml' && false) {
+//     var xmlTextarea = document.getElementById('content_xml');
+//     var xmlDom = Blockly.Xml.workspaceToDom(Code.workspace);
+//     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
+//     xmlTextarea.value = xmlText;
+//     xmlTextarea.focus();
+//   }
+
+//   var content = document.getElementById('content_' + Code.selected);
+//   content.textContent = '';
+//   if (Code.checkAllGeneratorFunctionsDefined(Blockly.Python)) {
+//     var code = generator.workspaceToCode(Code.workspace);
+
+//     content.textContent = code;
+//     if (typeof PR.prettyPrintOne == 'function') {
+//       code = content.textContent;
+//       code = PR.prettyPrintOne(code, 'py');
+//       content.innerHTML = code;
+//     }
+//   }
+
+// };
 
 /**
  * Attempt to generate the code and display it in the UI, pretty printed.
@@ -425,6 +453,24 @@ Code.init = function() {
            {controls: true,
             wheel: true}
       });
+
+  var secondaryWorkspace = Blockly.inject('secondaryDiv',
+      {media: './blockly/media/',
+       readOnly: true});
+
+  function mirrorEvent(primaryEvent) {
+    if (primaryEvent.type == Blockly.Events.UI) {
+      return;  // Don't mirror UI events.
+    }
+    // Convert event to JSON.  This could then be transmitted across the net.
+    var json = primaryEvent.toJson();
+    // console.log(json);
+    // Convert JSON back into an event, then execute it.
+    var secondaryEvent = Blockly.Events.fromJson(json, secondaryWorkspace);
+    secondaryEvent.run(true);
+  }
+  Code.workspace.addChangeListener(mirrorEvent);
+
 
   // Add to reserved word list: Local variables in execution environment (runJS)
   // and the infinite loop detection function.

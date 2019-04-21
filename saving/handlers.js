@@ -19,6 +19,8 @@ function download_session() {
 
   var text = notes.getValue();
 
+  text = '# '+ gen_permalink() + '\n\n' + text;
+
   var filename_input = document.getElementById("file-name").value;
   var filename;
   if (filename_input) {

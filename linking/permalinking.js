@@ -18,6 +18,7 @@ function encode_query(string_challenge) {
   return de_tabbed
 };
 
+
 // sanitization from:  https://github.com/pgbovine/OnlinePythonTutor/blob/0dcdacc7ff5be504dd6a47236ebc69dc0069f991/v5-unity/js/opt-frontend.ts#L62
 
 function decode_query(coded_challenge) {
@@ -26,17 +27,28 @@ function decode_query(coded_challenge) {
   return desanitized;
 };
 
-function gen_permalink() {
-
-  var code = Blockly.Python.workspaceToCode();
-  var url = generate_permalink(code, encode_query, 'code-along'); 
-  var _notes = notes.getValue();
-  url += '&notes=' + encode_query(_notes);
+function show_permalink() {
+  var url = gen_permalink();
   var perma_display = document.getElementById("display-perma");
   perma_display.value = url;
   copy_to_clipboard(url); 
   alert('copied permalink');
+}
 
+function gen_permalink() {
+
+  // document.getElementById('tab_xml').className = 'tabon';
+  // Code.tabClick('xml');
+  // var xmlTextarea = document.getElementById('content_xml');
+  // var code = xmlTextarea.value;
+  // document.getElementById('tab_xml').className = 'taboff';
+  // Code.tabClick('blocks');
+  // var url = generate_permalink(code, encode_query, 'code-along'); 
+  var url = generate_permalink("", encode_query, 'side-by-side'); 
+  var _notes = notes.getValue();
+  url += '&notes=' + encode_query(_notes);
+
+  return url;
 }
 
 function open_in(viztool) {

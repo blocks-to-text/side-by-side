@@ -1,16 +1,8 @@
 function copy_it() {
-  
-  if (editor.session.currentlyUsingBlocks) {
-    editor.toggleBlocks(cb);
-  } else {
-    cb();
-  };
 
-  function cb() {
-    var code = editor.aceEditor.getValue();
-    copy_to_clipboard(code); 
-    alert("copied snippet. open the console, paste & hit enter");
-  }
+  var code = Blockly.Python.workspaceToCode();
+  copy_to_clipboard(code); 
+  alert("copied snippet.");
   
 };
 
